@@ -1,27 +1,20 @@
-import Button from "./components/Button";
-import Accordion from "./components/Accordion";
-import { GoBell } from 'react-icons/go'
+import DropDown from "./components/DropDown";
+import { useState } from 'react'
 
 function App() {
-  const items = [
-    {
-      id: 1,
-      label: "Can I use react on a project",
-      content: "You can use react on any project that you want"
-    },
-    {
-      id: 2,
-      label: "Hello hello test",
-      content: "That is content not title"
-    },
-    {
-      id: 3,
-      label: "Last test",
-      content: "Is it really now?"
-    }
+  const [selection, setSelection] = useState(null)
+
+  const handleSelect = (option) => {
+    setSelection(option);
+  }
+
+  const options = [
+    { label: 'Red', value: 'red' },
+    { label: 'Green', value: 'green' },
+    { label: 'Blue', value: 'blue' },
   ];
 
-  return <Accordion items={items} />;
+  return <DropDown onChange={handleSelect} options={options} value={selection} />
 }
 
 export default App;
