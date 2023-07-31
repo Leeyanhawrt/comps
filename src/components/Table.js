@@ -4,14 +4,16 @@ function Table({ data, config, keyFn }) {
       return <td className="p-2" key={column.label}>{column.render(rowData)}</td>;
     });
 
-    sorting
-
     return <tr className="border-b" key={keyFn(rowData)}>
       {renderedCells}
     </tr>
   })
 
   const renderedHeaders = config.map((column) => {
+    if (column.header) {
+      return column.header();
+    }
+
     return <th key={column.label}>{column.label}</th>
   })
 
