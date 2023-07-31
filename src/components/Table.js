@@ -4,6 +4,8 @@ function Table({ data, config, keyFn }) {
       return <td className="p-2" key={column.label}>{column.render(rowData)}</td>;
     });
 
+    sorting
+
     return <tr className="border-b" key={keyFn(rowData)}>
       {renderedCells}
     </tr>
