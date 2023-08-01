@@ -1,31 +1,10 @@
-import { useState } from "react";
 import { GoArrowDown, GoArrowUp } from 'react-icons/go';
 import Table from "./Table"
+import useSort from "../hooks/use-sort";
 
 function SortableTable(props) {
-  const [sortOrder, setSortOrder] = useState(null);
-  const [sortBy, setSortBy] = useState(null);
-
   const { config, data } = props;
-
-  const handleClick = (label) => {
-    if (sortBy && label !== sortBy) {
-      setSortOrder('asc');
-      setSortBy(label);
-      return
-    }
-
-    if (sortOrder === null) {
-      setSortOrder('asc');
-      setSortBy(label);
-    } else if (sortOrder === 'asc') {
-      setSortOrder('desc');
-      setSortBy(label);
-    } else if (sortOrder === 'desc') {
-      setSortOrder(null);
-      setSortBy(null);
-    }
-  }
+  const { setSortColumn, sortedData, sortBy, sortOrder } = useSort(data, config);
 
   const updatedConfigs = config.map((column) => {
     if (!column.sortValue) {
@@ -35,7 +14,7 @@ function SortableTable(props) {
     return {
       ...column,
       header: () =>
-        <th className="cursor-pointer hover:bg-grey-100" onClick={() => { handleClick(column.label) }}>
+        <th className="cursor-pointer hover:bg-grey-100" onClick={() => { setSortColumn(column.label) }}>
           <div className="flex items-center">
             {getIcons(column.label, sortBy, sortOrder)}
             {column.label}
@@ -43,23 +22,6 @@ function SortableTable(props) {
         </th>
     }
   })
-
-  let sortedData = data
-  if (sortBy && sortOrder) {
-    const { sortValue } = config.find(column => column.label === sortBy);
-    sortedData = [...data].sort((a, b) => {
-      const valueA = sortValue(a);
-      const valueB = sortValue(b);
-
-      const reverseOrder = sortOrder === 'asc' ? 1 : -1;
-
-      if (typeof valueA === 'string') {
-        return valueA.localeCompare(valueB) * reverseOrder
-      } else {
-        return (valueA - valueB) * reverseOrder
-      }
-    })
-  }
 
   return <Table {...props} data={sortedData} config={updatedConfigs} />
 }
