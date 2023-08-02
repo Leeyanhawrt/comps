@@ -21,7 +21,7 @@ const reducer = (state, action) => {
     case ADD_TO_COUNTER:
       return {
         ...state,
-        count: state.count + action.payload,
+        count: state.count + state.valueToAdd,
         valueToAdd: 0
       }
     case CHANGE_ADD_TO_VALUE:
@@ -35,8 +35,6 @@ const reducer = (state, action) => {
 }
 
 function CounterPage({ initialCount }) {
-  // const [count, setCount] = useState(initialCount);
-  // const [valueToAdd, setValueToAdd] = useState(0);
   const [state, dispatch] = useReducer(reducer, {
     count: initialCount,
     valueToAdd: 0,
@@ -58,10 +56,7 @@ function CounterPage({ initialCount }) {
     e.preventDefault();
     dispatch({
       type: ADD_TO_COUNTER,
-      payload: state.valueToAdd
     })
-    // setCount(count + valueToAdd)
-    // setValueToAdd(0);
   }
 
   const handleChange = (e) => {
